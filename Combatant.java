@@ -1,5 +1,6 @@
 package sc2002project;
 
+// reminder: add status effects
 import java.util.*;
 public abstract class Combatant {
 	protected String name;
@@ -19,7 +20,8 @@ public abstract class Combatant {
         this.defense = defense;
         this.speed = speed;
     }
-
+ 
+   
     // Common behavior: Taking damage 
     // Damage formula: $Damage = \max(0, AttackerAttack - TargetDefense)$ 
     public void takeDamage(int damage) {
@@ -31,9 +33,16 @@ public abstract class Combatant {
     }
 
     // Getters for stats 
-    public int getSpeed() { return speed; }
-    public String getName() { return name; }
-    public int getHp() { return hp; }
+    public int getSpeed() { return this.speed; }
+    public String getName() { return this.name; }
+    public int getHp() { return this.hp; }
+   
+    public int getAttack() {return this.attack;}
+
+    public int getDefense() {return this.defense;}
+    public int getMaxHp() { return this.maxHp; }
+    public int getSpecialSkillCooldown() { return this.specialSkillCooldown; }
+    
     
     // Abstract method: Each type decides how to act
     public abstract void performTurn(BattleEngine engine);
