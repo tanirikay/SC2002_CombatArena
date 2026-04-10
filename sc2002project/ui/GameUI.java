@@ -6,6 +6,8 @@ import sc2002project.items.Item;
 
 public class GameUI {
 
+    private static final Scanner sc = new Scanner(System.in);
+
     // Init screens (existing)
 
     public static void PlayerInit() {
@@ -38,73 +40,85 @@ public class GameUI {
     }
 
     public static int PlayerChoice() {
-        Scanner sc = new Scanner(System.in);
         PlayerInit();
         while (true) {
             System.out.print("Select your player: ");
-            int choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    System.out.println("Warrior has been selected.\n");
-                    return 1;
-                case 2:
-                    System.out.println("Wizard has been selected.\n");
-                    return 2;
-                default:
-                    System.out.println("Invalid choice.");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Warrior has been selected.\n");
+                        return 1;
+                    case 2:
+                        System.out.println("Wizard has been selected.\n");
+                        return 2;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
             }
         }
     }
 
     public static String[] ItemChoice() {
-        Scanner sc = new Scanner(System.in);
         int count = 0;
         String[] items = new String[2];
         ItemInit();
         while (count < 2) {
-            System.out.print("Select your items: ");
-            int choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    System.out.println("Potion has been selected.\n");
-                    items[count] = "Potion";
-                    count++;
-                    break;
-                case 2:
-                    System.out.println("Power Stone has been selected.\n");
-                    items[count] = "Power Stone";
-                    count++;
-                    break;
-                case 3:
-                    System.out.println("Smoke Bomb has been selected.\n");
-                    items[count] = "Smoke Bomb";
-                    count++;
-                    break;
-                default:
-                    System.out.println("Invalid choice.");
+            System.out.print("Select your items (" + (count + 1) + " of 2): ");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Potion has been selected.\n");
+                        items[count] = "Potion";
+                        count++;
+                        break;
+                    case 2:
+                        System.out.println("Power Stone has been selected.\n");
+                        items[count] = "Power Stone";
+                        count++;
+                        break;
+                    case 3:
+                        System.out.println("Smoke Bomb has been selected.\n");
+                        items[count] = "Smoke Bomb";
+                        count++;
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
             }
         }
         return items;
     }
 
     public static int DifficultyChoice() {
-        Scanner sc = new Scanner(System.in);
         DifficultyInit();
         while (true) {
             System.out.print("\nSelect your difficulty: ");
-            int choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    System.out.println("Easy Difficulty has been selected.");
-                    return 1;
-                case 2:
-                    System.out.println("Medium Difficulty has been selected.");
-                    return 2;
-                case 3:
-                    System.out.println("Hard Difficulty has been selected.");
-                    return 3;
-                default:
-                    System.out.println("Invalid choice.");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Easy Difficulty has been selected.");
+                        return 1;
+                    case 2:
+                        System.out.println("Medium Difficulty has been selected.");
+                        return 2;
+                    case 3:
+                        System.out.println("Hard Difficulty has been selected.");
+                        return 3;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
             }
         }
     }
@@ -201,7 +215,6 @@ public class GameUI {
     }
 
     public static int showPlayerActions(boolean hasItems, boolean skillReady) {
-        Scanner sc = new Scanner(System.in);
         System.out.println("\nChoose an action:");
         System.out.println("1. Basic Attack");
         System.out.println("2. Defend");
@@ -213,29 +226,61 @@ public class GameUI {
         if (hasItems) {
             System.out.println("4. Use Item");
         }
-        System.out.print("Your choice: ");
-        return sc.nextInt();
+        while (true) {
+            System.out.print("Your choice: ");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                if (choice == 3 && !skillReady) {
+                    System.out.println("Special Skill is on cooldown — choose another action.");
+                } else if (choice == 4 && !hasItems) {
+                    System.out.println("No items remaining — choose another action.");
+                } else if (choice >= 1 && choice <= 4) {
+                    return choice;
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
+            }
+        }
     }
 
     public static int showTargetMenu(java.util.List<Combatant> targets) {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Select a target:");
         for (int i = 0; i < targets.size(); i++) {
             Combatant t = targets.get(i);
             System.out.println((i + 1) + ". " + t.getName() + " (HP: " + t.getHp() + ")");
         }
-        System.out.print("Your choice: ");
-        return sc.nextInt() - 1;
+        while (true) {
+            System.out.print("Your choice: ");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                if (choice >= 1 && choice <= targets.size()) return choice - 1;
+                System.out.println("Invalid choice.");
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
+            }
+        }
     }
 
     public static int showItemMenu(java.util.List<Item> items) {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Select an item:");
         for (int i = 0; i < items.size(); i++) {
             System.out.println((i + 1) + ". " + items.get(i).getName());
         }
-        System.out.print("Your choice: ");
-        return sc.nextInt() - 1;
+        while (true) {
+            System.out.print("Your choice: ");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                if (choice >= 1 && choice <= items.size()) return choice - 1;
+                System.out.println("Invalid choice.");
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
+            }
+        }
     }
 
     public static void showRoundSummary(int round, java.util.List<Combatant> all, java.util.List<Combatant> players) {
@@ -262,12 +307,20 @@ public class GameUI {
     }
 
     public static int showReplayMenu() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("\n1. Replay same settings");
         System.out.println("2. New game");
         System.out.println("3. Exit");
-        System.out.print("Your choice: ");
-        return sc.nextInt();
+        while (true) {
+            System.out.print("Your choice: ");
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                if (choice >= 1 && choice <= 3) return choice;
+                System.out.println("Invalid choice.");
+            } else {
+                sc.next();
+                System.out.println("Invalid choice.");
+            }
+        }
     }
 
     public static void main(String[] args) {

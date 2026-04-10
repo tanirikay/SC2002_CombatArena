@@ -7,6 +7,7 @@ import sc2002project.actions.BasicAttack;
 import sc2002project.actions.DefendAction;
 import sc2002project.actions.ItemAction;
 import sc2002project.actions.SpecialSkillAction;
+import sc2002project.effects.ArcaneBlastBuff;
 import sc2002project.items.Item;
 import sc2002project.ui.GameUI;
 
@@ -76,7 +77,9 @@ public class Wizard extends Combatant {
             int dmg = Math.max(0, this.getAttack() - enemy.getDefense());
             enemy.takeDamage(dmg);
             if (!enemy.isAlive()) {
-                this.setAttack(this.getAttack() + 10);
+                ArcaneBlastBuff buff = new ArcaneBlastBuff();
+                buff.apply(this);
+                this.addStatusEffect(buff);
             }
         }
     }

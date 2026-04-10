@@ -25,19 +25,19 @@ public class Level {
     // Factory methods for each difficulty
     public static Level easy() {
         return new Level("Easy",
-            () -> new ArrayList<>(List.of(new Goblin(), new Goblin(), new Goblin())),
+            () -> new ArrayList<>(List.of(new Goblin("Goblin A"), new Goblin("Goblin B"), new Goblin("Goblin C"))),
             () -> Collections.emptyList());
     }
 
     public static Level medium() {
         return new Level("Medium",
-            () -> new ArrayList<>(List.of(new Goblin(), new Wolf())),
-            () -> new ArrayList<>(List.of(new Wolf(), new Wolf())));
+            () -> new ArrayList<>(List.of(new Goblin("Goblin A"), new Wolf("Wolf A"))),
+            () -> new ArrayList<>(List.of(new Wolf("Wolf B"), new Wolf("Wolf C"))));
     }
 
     public static Level hard() {
         return new Level("Hard",
-            () -> new ArrayList<>(List.of(new Goblin(), new Goblin())),
-            () -> new ArrayList<>(List.of(new Goblin(), new Wolf(), new Wolf())));
+            () -> new ArrayList<>(List.of(new Goblin("Goblin A"), new Goblin("Goblin B"))),
+            () -> new ArrayList<>(List.of(new Goblin("Goblin C"), new Wolf("Wolf A"), new Wolf("Wolf B"))));
     }
 }
